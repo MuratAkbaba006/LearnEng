@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "767468330479",
+    "project_id": "rn-leareng",
+    "storage_bucket": "rn-leareng.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:767468330479:android:7730c17aaed57bb3972a1a",
+        "android_client_info": {
+          "package_name": "com.LearnEng.learneng"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "767468330479-hlebplb33m2r5cskr94rnhh3d9aufdff.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdoK9FGjxRazyulNGVwTYepBTKhtN7EL0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "767468330479-hlebplb33m2r5cskr94rnhh3d9aufdff.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
