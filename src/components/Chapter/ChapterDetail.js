@@ -41,12 +41,12 @@ export default class ChapterDetail extends Component {
        const {questions}=this.state;
         return (
             
-               <React.Fragment>
+               <View style={{flex:1}}>
                    { questions.length !==0 &&
                        
                     <Game questions={questions} />
                    }
-                </React.Fragment>
+                </View>
             
         )
     }

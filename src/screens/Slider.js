@@ -1,6 +1,6 @@
 import { inject, observer } from 'mobx-react'
 import React,{useState,useEffect} from 'react'
-import {SafeAreaView,View,Text,Animated,FlatList,StyleSheet, Image,TouchableOpacity} from 'react-native'
+import {SafeAreaView,View,Text,Animated,FlatList,StyleSheet, Image,TouchableOpacity,Dimensions} from 'react-native'
 import {API_URL} from '../config/config'
 import axios from 'axios'
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,8 +8,7 @@ import Svg,{Rect} from 'react-native-svg'
 import NavigationService from '../config/NavigationService'
 import {BarIndicator} from 'react-native-indicators'
 
-const width=360;
-const height=640;
+const {width,height}=Dimensions.get('window');
 const SPACING=10;
 const ITEM_SIZE=width * 0.72;
 const SPACER_ITEM_SIZE=(width-ITEM_SIZE) / 2;

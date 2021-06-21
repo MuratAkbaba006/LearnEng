@@ -1,6 +1,6 @@
 import React, { Component,useState,useEffect} from 'react'
 import { inject, observer } from 'mobx-react'
-import {SafeAreaView,View,Text,StyleSheet,TouchableOpacity,Animated,Image} from 'react-native'
+import {SafeAreaView,View,Text,StyleSheet,TouchableOpacity,Animated,Image,Dimensions} from 'react-native'
 import NavigationService from '../config/NavigationService';
 const alphabet=["A","B","C","Ç","D","E","F","G","Ğ","H","I","İ","J","K","L","M","N","O","Ö","P","R","S","Ş","T","U","Ü","V","Y","Z"]
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
@@ -8,6 +8,7 @@ import jwt_decode from "jwt-decode";
 import axios from 'axios';
 import {API_URL} from '../config/config'
 
+const {width,height} = Dimensions.get('window');
 
 const Game = inject("AuthenticateStore")(observer((props)=> {
     const [index,setIndex] =useState(0);
@@ -155,7 +156,7 @@ const Game = inject("AuthenticateStore")(observer((props)=> {
            <View>
                 {
                     rightAnswer && 
-                        <View >
+                        <View>
                             <Image source={{uri:'https://cdn.dribbble.com/users/1283437/screenshots/4486866/checkbox-dribbble-looped-landing.gif',width:100,height:100}}></Image>
                         </View>  
                 }
@@ -163,7 +164,7 @@ const Game = inject("AuthenticateStore")(observer((props)=> {
            {!rightAnswer && 
            <React.Fragment>
 
-              <View style={{height:30,width:30,backgroundColor:'#ddd',margin:10}} >
+              <View style={{height:30,width:30,backgroundColor:'#E4E4E4',margin:10}} >
                     <TouchableOpacity onPress={()=>showClue()} >
                             <MaterialCommunityIcons name="lightbulb-on" size={24} color="yellow" />
                     </TouchableOpacity>
@@ -172,7 +173,8 @@ const Game = inject("AuthenticateStore")(observer((props)=> {
               
                 <Animated.Text style={{opacity:value,fontSize:15,fontWeight:'700',color:'#66bb6a'}}>
                     {clue}
-                </Animated.Text>   
+                </Animated.Text>
+                <View style={style.show_area}> 
            <View style={style.question_area}>
                <Text style={style.question_text} numberOfLines={1}>{question}</Text>
            </View>
@@ -182,6 +184,7 @@ const Game = inject("AuthenticateStore")(observer((props)=> {
                    {(index+1)+"/"+props.questions.length}
                </Text>
            </View>
+           </View>  
            <View style={style.keywords_area}>
                {keywords.map((item,index)=>(
                    <TouchableOpacity onPress={()=>removeKeyword(index)} style={[style.keywords,{backgroundColor:(wrong)?'red':'yellow'}]} key={index}>
@@ -231,6 +234,16 @@ const style=StyleSheet.create({
         flex:1
 
     },
+    show_area:{
+        backgroundColor:'white',
+        width:width*.9,
+        justifyContent:'center',
+        textAlign:'center',
+        alignItems:'center',
+        borderBottomLeftRadius:25,
+        borderBottomRightRadius:25,
+
+    },
     question_area:{
         height:50,
         flexDirection:'row',
@@ -239,7 +252,8 @@ const style=StyleSheet.create({
     question_text:{
         fontSize:20,
         fontWeight:'700',
-        textAlign:'center'        
+        textAlign:'center',
+
     },
     progress_area:{
 
@@ -251,7 +265,13 @@ const style=StyleSheet.create({
         flexDirection:'row',
         flexWrap:'wrap',
         padding:20,
-        justifyContent:'space-around'
+        justifyContent:'space-around',
+        width:width*.9,
+        backgroundColor:'white',
+        height:200,
+        marginTop:20,
+        borderBottomLeftRadius:50,
+        borderBottomRightRadius:150
         
     },
     letter:{
@@ -274,12 +294,18 @@ const style=StyleSheet.create({
         flexDirection:'row',
         flexWrap:'wrap',
         padding:20,
-        height:80
+        height:95,
+        width:width*.9,
+        justifyContent:'center',
+        marginTop:10,
+        backgroundColor:'#D2B99D',
+        borderRadius:20
+        
     },
     keywords:{
-        margin:10,
-        width:30,
-        height:30,
+        margin:4,
+        width:25,
+        height:25,
         backgroundColor:'yellow',
         borderRadius:30,
         justifyContent:'center',
