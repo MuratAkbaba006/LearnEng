@@ -8,11 +8,11 @@ import AuthRedirect from './screens/AuthRedirect'
 import CategoryDetail from './components/Category/CategoryDetail';
 import ChapterDetail from './components/Chapter/ChapterDetail';
 import Slider from './screens/Slider'
+import Profile from '../src/components/Profile/Profile'
 
 const AppStack=createStackNavigator({
   Home:{
     screen:Home,
-    
   },
   CategoryDetail:{
     screen:CategoryDetail
@@ -22,6 +22,9 @@ const AppStack=createStackNavigator({
   },
   Slider:{
     screen:Slider
+  },
+  Profile:{
+    screen:Profile
   }
 })
 const AuthenticateStack=createStackNavigator({
@@ -31,9 +34,12 @@ const AuthenticateStack=createStackNavigator({
     Register:{
         screen:Register,
         navigationOptions:{header:null}}})
+
+
 const SwitchNavigator=createSwitchNavigator({
     App:AppStack,
     Auth:AuthenticateStack,
     AuthRedirect
   },{initialRouteName:'AuthRedirect'})
+  
 export default createAppContainer(SwitchNavigator)

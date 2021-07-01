@@ -16,7 +16,6 @@ export default class CategoryDetail extends Component {
             Chapter:[],
             categoryName:[],
             progress:[],
-            
             userid:0
         }
     }
@@ -35,19 +34,15 @@ export default class CategoryDetail extends Component {
         })
        this.setState({data});
        this.setState({categoryName})
-        this.setState({userid})
-
-    const progresses=[];
-
+       this.setState({userid})
+        const progresses=[];
         axios.get(`${API_URL}/Progress`).then(res=>{
             res.data.map(e=>{
                 if(e.userId===this.state.userid){
                     progresses.push(e.levelId)          
                 }
             })
-    
         })
-        
         this.setState({progress:progresses});
 
             setTimeout(() => {
@@ -65,31 +60,19 @@ export default class CategoryDetail extends Component {
                      return newArray;
                 }
                
-               var uniqueArray = removeDuplicates(Chapter, "chapter_name");
-               console.log(typeof uniqueArray);
-             this.setState({Chapter:uniqueArray})
-      
+            var uniqueArray = removeDuplicates(Chapter, "chapter_name");
+             this.setState({Chapter:uniqueArray})     
             }, 200);
-     
-      
-
-              
-         
-
-            
-          
-        
-        
-    
     }
     
     
    
     renderItem = ({item}) =>{
-      
-        
-        return <ChapterItem chapter={item}  user_id={this.state.userid} progress={this.state.progress} category_name={this.state.categoryName} data={this.state.data}/>
-          
+        return <ChapterItem chapter={item} 
+                            user_id={this.state.userid} 
+                            progress={this.state.progress} 
+                            category_name={this.state.categoryName} 
+                            data={this.state.data}/>    
     }
 
     render() {

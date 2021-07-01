@@ -9,7 +9,6 @@ import {inject} from 'mobx-react'
 @inject('AuthenticateStore')
 
 export default class Login extends Component {
-    
     constructor(){
         super();
         this.state={
@@ -22,16 +21,10 @@ export default class Login extends Component {
            username:values.username,
            password:values.password
        }).then((res)=>{
-           setTimeout(()=>{
-        this.props.navigation.navigate('App');
-
-           },2000)
            if(res.status===200){
                this.props.AuthenticateStore.saveToken(res.data.token);
                alert('Giriş işlemi başarılı');
            }
-          
-
        }).catch((err)=>{
             alert('Kullanıcı adı/şifre hatalı')
        })

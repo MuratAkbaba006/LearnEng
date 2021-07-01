@@ -8,7 +8,6 @@ import axios from 'axios'
 import {inject} from 'mobx-react'
 @inject("AuthenticateStore")
 
-
 export default class Register extends Component {
     constructor(){
         super();
@@ -17,9 +16,8 @@ export default class Register extends Component {
             hidePassword:false
         }
     }
-    
+
     _handleSubmit = (values)=>{
-   
         axios.post(`${API_URL}/Auth/register/`,{
             username:values.name,
             email:values.email,
@@ -29,15 +27,11 @@ export default class Register extends Component {
                 alert('Kayıt işlemi başarılı');
             }
          this.props.AuthenticateStore.saveToken(res.data.token);
-        
-         
-           
- 
         }).catch((err)=>{
              alert('Kayıt işlemi başarısız')
         })
-
     }
+
     render() {
         return (
             <SafeAreaView style={{flex:1}}>
@@ -100,7 +94,7 @@ export default class Register extends Component {
                             <TouchableOpacity onPress={()=>this.setState({checkbox:!this.state.checkbox})} style={style.checkbox}>
                                 {this.state.checkbox && <Text style={{fontSize:30}}>✓</Text>}
                             </TouchableOpacity>
-                            <View style={{flex:1,flexWrap:'nowrap',paddingLeft:5}}>
+                            <View style={{flex:1,flexWrap:'nowrap',paddingLeft:5,justifyContent:'center',alignItems:'center'}}>
                                 <Text style={style.checkbox_text}>By creating your account you have to agree with our Terms and Conditions</Text>
                             </View>
                         </View>
@@ -125,7 +119,7 @@ export default class Register extends Component {
 
 const style=StyleSheet.create({
     hero:{color:'#1C1939',fontWeight:'600',fontSize:30,textAlign:'center'},
-    form:{flex:1,marginTop:8},
+    form:{flex:1,marginTop:8,justifyContent:'center',alignItems:'center'},
     input:{backgroundColor:'#F7F7F7',
             padding:15,
             width:300,
@@ -153,7 +147,7 @@ error:{color:'red'},
               borderWidth:1,
               justifyContent:'center',
               alignItems:'center'}, 
-    checkbox_area:{flexDirection:'row',alignItems:'center'},
+    checkbox_area:{flexDirection:'row',alignItems:'center',marginLeft:30},
     checkbox_text:{color:'#656379'},
     error:{color:'red'}      
 })

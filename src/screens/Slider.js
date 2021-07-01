@@ -1,10 +1,10 @@
 import { inject, observer } from 'mobx-react'
 import React,{useState,useEffect} from 'react'
-import {SafeAreaView,View,Text,Animated,FlatList,StyleSheet, Image,TouchableOpacity,Dimensions} from 'react-native'
+import {View,Text,Animated,FlatList,StyleSheet,
+  Image,TouchableOpacity,Dimensions} from 'react-native'
 import {API_URL} from '../config/config'
 import axios from 'axios'
 import { LinearGradient } from 'expo-linear-gradient';
-import Svg,{Rect} from 'react-native-svg'
 import NavigationService from '../config/NavigationService'
 import {BarIndicator} from 'react-native-indicators'
 
@@ -33,7 +33,6 @@ const BackDrop = ({category, scrollX}) => {
               const translateX = scrollX.interpolate({
                 inputRange: [(index - 2) * ITEM_SIZE, (index - 1) * ITEM_SIZE],
                 outputRange: [0, width],
-                // extrapolate:'clamp'
               });
               return (
                 <Animated.View
@@ -42,11 +41,7 @@ const BackDrop = ({category, scrollX}) => {
                 >
                 <Image
                   source={{ uri: item.url }}
-                  style={{
-                    width,
-                    height: BACKDROP_HEIGHT,
-                    position: 'absolute'
-                  }}
+                  style={{width,height: BACKDROP_HEIGHT,position: 'absolute'}}
                 />
                 </Animated.View>
               );
@@ -54,12 +49,7 @@ const BackDrop = ({category, scrollX}) => {
           />
           <LinearGradient
             colors={['rgba(0, 0, 0, 0)', 'white']}
-            style={{
-              height: BACKDROP_HEIGHT,
-              width,
-              position: 'absolute',
-              bottom: 0,
-            }}
+            style={{height: BACKDROP_HEIGHT,width,position: 'absolute',bottom: 0,}}
           />
         </View>
   }
@@ -67,60 +57,39 @@ const BackDrop = ({category, scrollX}) => {
 
 
 const Slider = inject("AuthenticateStore")(observer((props)=>{
+
     const [question,setQuestion]=useState([]);
     const [category,setCategory]=useState([])
     const scrollX=React.useRef(new Animated.Value(0)).current;
     const categories=[]
-    
-    
-
-
+ 
     useEffect(()=>{
         const token=props.AuthenticateStore.token;
-
         if(question.length===0){
         axios.get(`${API_URL}/Questions`,{
             headers: {"Authorization" : `Bearer ${token}`} 
         }).then(res=>{
-          //res.data.map((e)=>category.push([{name:e.level,ur:e.level_image}]))
             res.data.map((item,index)=>{
-               categories.push({name:item.level,url:item.level_image})
-             
-            })
-            
+            categories.push({name:item.level,url:item.level_image})  
+            })           
         })
 
           setTimeout(()=>{
             function removeDuplicates(originalArray, prop) {
               var newArray = [];
               var lookupObject  = {};
-         
               for(var i in originalArray) {
                  lookupObject[originalArray[i][prop]] = originalArray[i];
               }
-         
               for(i in lookupObject) {
                   newArray.push(lookupObject[i]);
               }
                return newArray;
-          }
-         
-         var uniqueArray = removeDuplicates(categories, "name");
-         console.log(uniqueArray);
-         setCategory([{key:'left-spacer'},...uniqueArray,{key:'right-spacer'}]);
-         console.log("uniqueArray is: " + JSON.stringify(uniqueArray));
-
-              
-         
-
-            
-          },2000)
-          
-           // setCategory([{key:'left-spacer'},...res.data.level,{key:'right-spacer'}]);
-         
+            }
+            var uniqueArray = removeDuplicates(categories, "name");
+            setCategory([{key:'left-spacer'},...uniqueArray,{key:'right-spacer'}]);
+          },2000)         
       }
-       
-
       },[question])
 
       if(category.length===0){
@@ -129,31 +98,25 @@ const Slider = inject("AuthenticateStore")(observer((props)=>{
 
     return (
         <View style={style.container}>
-            
             <BackDrop category={category} scrollX={scrollX} />
             <Animated.FlatList
-            showsHorizontalScrollIndicator={false}
-            data={category}
-            horizontal
-            contentContainerStyle={{alignItems:'center'}}
-            snapToInterval={ITEM_SIZE}
-            decelerationRate={0}
-            bounces={false}
-            onScroll={Animated.event(
+              showsHorizontalScrollIndicator={false}
+              data={category}
+              horizontal
+              contentContainerStyle={{alignItems:'center'}}
+              snapToInterval={ITEM_SIZE}
+              decelerationRate={0}
+              bounces={false}
+              onScroll={Animated.event(
                 [{nativeEvent:{contentOffset:{x:scrollX}}}],
                 {useNativeDriver:true}
               )}
-            scrollEventThrottle={16}
-            renderItem={({item,index})=>{
+              scrollEventThrottle={16}
+              renderItem={({item,index})=>{
                 if(!item.url){
                     return <View style={{width:SPACER_ITEM_SIZE}}></View>
                 }
-               
-                  const inputRange=[
-                    (index-2)*ITEM_SIZE,
-                    (index-1)*ITEM_SIZE,
-                    index * ITEM_SIZE,
-                  ];
+                  const inputRange=[(index-2)*ITEM_SIZE,(index-1)*ITEM_SIZE,index * ITEM_SIZE,];
                   const translateY=scrollX.interpolate({
                     inputRange,
                     outputRange:[100,50,100]
@@ -176,34 +139,20 @@ const Slider = inject("AuthenticateStore")(observer((props)=>{
                                     backgroundColor:'white',
                                     borderRadius:34,
                                     transform:[{translateY}]
-                                    }}
-                                >
+                                    }}>
                                     <Image 
                                     source={{uri:item.url}}
-                                    style={style.poster_image}
-                                    />
+                                    style={style.poster_image}/>
                                     <Text style={{fontSize:24}} numberOfLines={1}>
                                     {item.name}
                                     </Text>
-                                    
-
                                 </Animated.View>
                                 </View>
                       </TouchableOpacity>
-                  )
-            }}    
-
-            
-            
-            >
-
-
+                  )}}>
             </Animated.FlatList>
-
-
         </View>
     )
-
 })) 
 
 
@@ -231,8 +180,5 @@ const style = StyleSheet.create({
       marginBottom:10
     }
   });
-
-    
-
 
 export default Slider

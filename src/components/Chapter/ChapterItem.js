@@ -1,7 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import {SafeAreaView,View,Text,StyleSheet,TouchableOpacity,Image} from 'react-native'
 import NavigationService from '../../config/NavigationService'
-import { LinearGradient } from 'expo-linear-gradient';
 import {BarIndicator} from 'react-native-indicators'
 
 const Loading=()=>(
@@ -10,17 +9,11 @@ const Loading=()=>(
     </View>
   )
 
-
-
-const ChapterItem = ({chapter,category_name,data,user_id,progress}) => {
-  
-
-   if(progress.length===0){
+const ChapterItem = ({chapter,category_name,data,user_id,progress}) => {    
+    
+   if(chapter.length===0){
        return <Loading/>
    }
-
-  
-   
     return (
         <TouchableOpacity  onPress={()=>{
             NavigationService.navigate('ChapterDetail',{
@@ -31,19 +24,15 @@ const ChapterItem = ({chapter,category_name,data,user_id,progress}) => {
                 
             })
         }}>
-
-            <View style={[style.chapter,{backgroundColor:progress.includes(chapter.chapter_level)?'#62F8C2':'#83F9F4'}]}>
-                
-            <Image source={{uri:chapter.chapter_image,width:80,height:80}} style={{flexDirection:'row',borderRadius:30,opacity:.9}}></Image>
-            
+            <View style={[style.chapter,
+                {backgroundColor:progress.includes(chapter.chapter_level.toString())?'#62F8C2':'#83F9F4'}]}>             
+            <Image source={{uri:chapter.chapter_image,width:80,height:80}} 
+                style={{flexDirection:'row',borderRadius:30,opacity:.9}}></Image>            
                 <Text style={style.chapter_name} >
                     {chapter.chapter_name}
                 </Text>
-                
             </View>
-
         </TouchableOpacity>
-
     )
 }
 
@@ -68,8 +57,6 @@ const style = StyleSheet.create({
         },
         shadowOpacity:.3,
         shadowRadius:20,
-        
-
     },
     chapter_name:{
         justifyContent:'center',

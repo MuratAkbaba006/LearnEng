@@ -18,8 +18,6 @@ class AuthenticateStore
             await AsyncStorage.setItem('token',token);
             this.token=token;
             this.redirectControl();
-
-
         }catch(e){
             console.log(e);
         }
@@ -38,13 +36,11 @@ class AuthenticateStore
             const token = await AsyncStorage.getItem('token');
             this.token=token;
             this.redirectControl();
-
             //en yukarıda tanımlanan token değerine AsyncStoreden gelen
             //token değerini atıyoruz.
         }catch(e){
             console.log(e);
         }
-
     }
 
     async removeToken(){
@@ -52,8 +48,6 @@ class AuthenticateStore
             await AsyncStorage.removeItem('token');
             this.token=null;
             this.redirectControl();
-
-
         }catch(e){
             console.log(e);
         }

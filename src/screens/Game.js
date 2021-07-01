@@ -1,7 +1,6 @@
-import React, { Component,useState,useEffect} from 'react'
+import React, {useState,useEffect} from 'react'
 import { inject, observer } from 'mobx-react'
-import {SafeAreaView,View,Text,StyleSheet,TouchableOpacity,Animated,Image,Dimensions} from 'react-native'
-import NavigationService from '../config/NavigationService';
+import {View,Text,StyleSheet,TouchableOpacity,Animated,Image,Dimensions} from 'react-native'
 const alphabet=["A","B","C","Ç","D","E","F","G","Ğ","H","I","İ","J","K","L","M","N","O","Ö","P","R","S","Ş","T","U","Ü","V","Y","Z"]
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import jwt_decode from "jwt-decode";
@@ -26,7 +25,6 @@ const Game = inject("AuthenticateStore")(observer((props)=> {
     const [clue,setClue]=useState('')
     //ipucu bilgisini tutar
     const [rightAnswer,setRightAnswer]=useState(false);
-    
     const [sayac,setSayac]=useState(1)
 
     const value = new Animated.Value(0);
@@ -44,12 +42,7 @@ const Game = inject("AuthenticateStore")(observer((props)=> {
                       duration:2000,
                       useNativeDriver:false
                   }).start();
-              }, 3000);
-             
-              
-              
-        
-       
+              }, 3000)      
       }; 
 
     const shuffle = (array) => {
@@ -59,8 +52,7 @@ const Game = inject("AuthenticateStore")(observer((props)=> {
     }
 
     const setKeyword = (keyword)=>{
-        //karışık halde verilen cevap harflerinden birine tıklandığında tetiklenir.
-        
+        //karışık halde verilen cevap harflerinden birine tıklandığında tetiklenir.  
         if(keywords.length<answer.length){
         keywords.push(keyword);
         setKeywords([...keywords])
@@ -85,8 +77,7 @@ const Game = inject("AuthenticateStore")(observer((props)=> {
             }
         //eğer cevabın uzunluğu kadar keyword'e tıklanmışsa 
         //keywordsleri birleştirip cevapla karşılaştırır.    
-        }
-        
+        }        
     }
     
     const removeKeyword =(index) =>{
@@ -115,35 +106,28 @@ const Game = inject("AuthenticateStore")(observer((props)=> {
                 const stringToArray=answer.split("");
                 //cevabı boşluklarla ayırarak bir diziye dönüştürdük.
             
-            
                 stringToArray.push(alphabet[Math.floor(Math.random()*alphabet.length)]);
                 stringToArray.push(alphabet[Math.floor(Math.random()*alphabet.length)]);
                 stringToArray.push(alphabet[Math.floor(Math.random()*alphabet.length)]);
-
                 setShuffleAnswer(shuffle(stringToArray));
-
             }
-        
-            
       },[confirm])
-
       //burada confirm true olursa yani sorunun cevabı doğru 
       //ise useEffect tekrar başlar yani bir sonraki soruya geçilmiş olur
-        if(answer==='' && index !==0 && sayac===1){
-            console.log('bölüm tamamlandı kardeş');
+        
+      if(answer==='' && index !==0 && sayac===1){
             setSayac(2);
             const token=props.AuthenticateStore.token;
             const userid=parseInt(jwt_decode(token).nameid);
             const levelid=props.questions[0].levelid;
+            const chapter=props.questions[0].chapter;
+            console.log(levelid);
             axios.post(`${API_URL}/Progress`,{
                 levelId:levelid,
                 userId:userid,
-                isComplete:true
+                isComplete:true,
+                Level:chapter
             })
-                
-            
-        
-            
         }
       
       
@@ -152,74 +136,72 @@ const Game = inject("AuthenticateStore")(observer((props)=> {
     return (
         <View style={[style.app,{backgroundColor:rightAnswer?'#e1f4e5':'#f2f2f2'}]}>
         {answer !== "" &&
-       <React.Fragment>
-           <View>
+            <React.Fragment>
+                <View>
                 {
                     rightAnswer && 
                         <View>
-                            <Image source={{uri:'https://cdn.dribbble.com/users/1283437/screenshots/4486866/checkbox-dribbble-looped-landing.gif',width:100,height:100}}></Image>
+                            <Image 
+                            source={{uri:'https://cdn.dribbble.com/users/1283437/screenshots/4486866/checkbox-dribbble-looped-landing.gif',width:100,height:100}}>
+                            </Image>
                         </View>  
                 }
-           </View>
-           {!rightAnswer && 
-           <React.Fragment>
-
-              <View style={{height:30,width:30,backgroundColor:'#E4E4E4',margin:10}} >
-                    <TouchableOpacity onPress={()=>showClue()} >
-                            <MaterialCommunityIcons name="lightbulb-on" size={24} color="yellow" />
-                    </TouchableOpacity>
-                 
                 </View>
+                {!rightAnswer && 
+                <React.Fragment>
+
+                    <View style={{height:30,width:30,backgroundColor:'#white',margin:10}} >
+                        <TouchableOpacity onPress={()=>showClue()} >
+                            <MaterialCommunityIcons name="lightbulb-on" size={24} color="yellow" />
+                        </TouchableOpacity>
+                    </View>
               
-                <Animated.Text style={{opacity:value,fontSize:15,fontWeight:'700',color:'#66bb6a'}}>
-                    {clue}
-                </Animated.Text>
-                <View style={style.show_area}> 
-           <View style={style.question_area}>
-               <Text style={style.question_text} numberOfLines={1}>{question}</Text>
-           </View>
-        
-           <View style={style.progress_area}>
-               <Text style={style.progress_text}>
-                   {(index+1)+"/"+props.questions.length}
-               </Text>
-           </View>
-           </View>  
-           <View style={style.keywords_area}>
-               {keywords.map((item,index)=>(
-                   <TouchableOpacity onPress={()=>removeKeyword(index)} style={[style.keywords,{backgroundColor:(wrong)?'red':'yellow'}]} key={index}>
-                       <Text style={style.keywords_text}>
-                           {item}
-                       </Text>
-                   </TouchableOpacity>
+                    <Animated.Text style={{opacity:value,fontSize:15,fontWeight:'700',color:'#66bb6a'}}>
+                        {clue}
+                    </Animated.Text>
+                    <View style={style.show_area}> 
+                        <View style={style.question_area}>
+                            <Text style={style.question_text} >{question}</Text>
+                        </View>
+                    </View>  
+            
+                    <View style={style.progress_area}>
+                        <Text style={style.progress_text}>
+                            {(index+1)+"/"+props.questions.length}
+                        </Text>
+                    </View>
+                    <View style={style.keywords_area}>
+                        {keywords.map((item,index)=>(
+                            <TouchableOpacity 
+                                onPress={()=>removeKeyword(index)} 
+                                style={[style.keywords,{backgroundColor:(wrong)?'red':'yellow'}]} 
+                                key={index}>
+                                <Text style={style.keywords_text}>
+                                    {item}
+                                </Text>
+                            </TouchableOpacity>
                ))}
-           </View>
-           <View style={style.random_letter_area}>
-               {shuffleAnswer.map((item,index)=>(
-                   <TouchableOpacity style={style.letter} key={index} onPress={()=>{setKeyword(item)}}>
-                       <Text style={style.letter_text}>
-                           {item}
-                       </Text>
-                       
-                   </TouchableOpacity>
+                    </View>
+                    <View style={style.random_letter_area}>
+                        {shuffleAnswer.map((item,index)=>(
+                        <TouchableOpacity style={style.letter} key={index} onPress={()=>{setKeyword(item)}}>
+                            <Text style={style.letter_text}>
+                                {item}
+                            </Text>
+                        </TouchableOpacity>
                ))}
-           </View>
-           </React.Fragment>
-}
-       </React.Fragment>
+                    </View>
+                </React.Fragment>
+        }
+            </React.Fragment>
        }
        {answer === "" && 
        <View>
-           
-                <Text>
-                    Bölüm Tamamlandı
-                 </Text>
-           
-            
+            <Text>
+                Bölüm Tamamlandı
+            </Text>
         </View>
-           
        }    
-       
     </View>
     )
 }))
@@ -235,28 +217,29 @@ const style=StyleSheet.create({
 
     },
     show_area:{
-        backgroundColor:'white',
-        width:width*.9,
         justifyContent:'center',
         textAlign:'center',
         alignItems:'center',
-        borderBottomLeftRadius:25,
-        borderBottomRightRadius:25,
-
     },
     question_area:{
-        height:50,
+        height:120,
+        width:width*0.9,
         flexDirection:'row',
-        marginBottom:15
+        backgroundColor:'#ffe4b5',
+        textAlign:'center',
+        justifyContent:'center',
+        borderRadius:10
     },
     question_text:{
         fontSize:20,
         fontWeight:'700',
         textAlign:'center',
+        paddingTop:10,
+        justifyContent:'center'
 
     },
     progress_area:{
-
+        margin:10
     },
     progress_text:{
         fontWeight:'700'
@@ -265,24 +248,19 @@ const style=StyleSheet.create({
         flexDirection:'row',
         flexWrap:'wrap',
         padding:20,
-        justifyContent:'space-around',
-        width:width*.9,
-        backgroundColor:'white',
-        height:200,
-        marginTop:20,
-        borderBottomLeftRadius:50,
-        borderBottomRightRadius:150
-        
+        justifyContent:'space-between',
+        width:190,
+        backgroundColor:'#c0c0c0',
+        height:190,
+        marginTop:100,
+        borderRadius:20,
     },
     letter:{
-        margin:10,
-        width:40,
-        height:40,
-        backgroundColor:'aqua',
-        borderRadius:30,
+        margin:1,
+        width:30,
+        height:30,
+        backgroundColor:'#ffe4b5',
         justifyContent:'center',
-        
-
     },
     letter_text:{
         justifyContent:'center',
@@ -292,22 +270,21 @@ const style=StyleSheet.create({
     },
     keywords_area:{
         flexDirection:'row',
-        flexWrap:'wrap',
-        padding:20,
-        height:95,
-        width:width*.9,
+        height:55,
+        width:width*.7,
+        borderWidth:2,
+        borderColor:'#dda0dd',
         justifyContent:'center',
+        alignItems:'center',
         marginTop:10,
-        backgroundColor:'#D2B99D',
-        borderRadius:20
-        
+        borderRadius:10,
+        position:'absolute'
     },
     keywords:{
-        margin:4,
+        margin:1,
         width:25,
         height:25,
         backgroundColor:'yellow',
-        borderRadius:30,
         justifyContent:'center',
     },
     keywords_text:{
@@ -315,9 +292,6 @@ const style=StyleSheet.create({
         textAlign:'center',
         fontWeight:'700'
     }
-
-
-
 })
 
 

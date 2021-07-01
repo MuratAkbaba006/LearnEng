@@ -16,38 +16,30 @@ export default class ChapterDetail extends Component {
         }
     }
 
-   
-
     componentDidMount(){
         const data=this.props.navigation.getParam('data');
         const categoryName=this.props.navigation.getParam('category_name');
         const chapterName=this.props.navigation.getParam('chapter_name');
         const levelid=this.props.navigation.getParam('level_id');
-        console.log(categoryName);
-        console.log(chapterName);
-        console.log(levelid);
         const questions=[];
         data.map((a)=>{
           if(a.level==categoryName.name && a.chapter==chapterName)
           {
-              questions.push({question:a.question,answer:a.answer,clue:a.ipucu,levelid:a.levelId})
+              questions.push({question:a.question,answer:a.answer,
+                clue:a.ipucu,levelid:a.levelId,chapter:a.chapter})
           }
         })
         this.setState({questions:questions})                                        
-    
     }
     
     render() {
        const {questions}=this.state;
         return (
-            
                <View style={{flex:1}}>
                    { questions.length !==0 &&
-                       
                     <Game questions={questions} />
                    }
                 </View>
-            
         )
     }
 }
